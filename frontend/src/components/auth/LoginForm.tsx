@@ -32,7 +32,7 @@ export default function LoginPage() {
       } else {
         toast.error(result.message || 'Login failed');
       }
-    } catch (error) {
+    } catch (err) {
       toast.error('An error occurred during login');
     } finally {
       setIsLoading(false);

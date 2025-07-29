@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useSessionStore } from '@/store';
 import { sessionService } from '@/services/sessions';
+import { Session } from '@/types';
 import { Plus, MessageSquare, Download, TrendingUp, Clock, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -24,7 +25,7 @@ export default function DashboardPage() {
     loadSessions();
   }, []);
 
-  const loadSessions = async () => {
+  const loadSessions = useCallback(async () => {
     setLoading(true);
     try {
       const response = await sessionService.getSessions();
@@ -34,11 +35,11 @@ export default function DashboardPage() {
         // Calculate stats
         const totalSessions = response.data.sessions.length;
         const totalComponents = response.data.sessions.reduce(
-          (acc: number, session: any) => acc + session.components.length, 
+          (acc: number, session: Session) => acc + session.components.length, 
           0
         );
         const recentActivity = response.data.sessions.filter(
-          (session: any) => new Date(session.statistics.lastActiveAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          (session: Session) => new Date(session.statistics.lastActiveAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
         ).length;
 
         setStats({
@@ -47,12 +48,12 @@ export default function DashboardPage() {
           recentActivity,
         });
       }
-    } catch (error) {
+    } catch (err) {
       toast.error('Failed to load sessions');
     } finally {
       setLoading(false);
     }
-  };
+  }, [setSessions, setLoading]);
 
   const createNewSession = async () => {
     try {
@@ -66,7 +67,7 @@ export default function DashboardPage() {
       } else {
         toast.error('Failed to create session');
       }
-    } catch (error) {
+    } catch (err) {
       toast.error('Failed to create session');
     }
   };

@@ -50,8 +50,8 @@ export const useAuthActions = () => {
         return { success: true };
       }
       return { success: false, message: response.message };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'Login failed' };
+    } catch (error: unknown) {
+      return { success: false, message: (error as Error).message || 'Login failed' };
     }
   };
 
@@ -63,8 +63,8 @@ export const useAuthActions = () => {
         return { success: true };
       }
       return { success: false, message: response.message };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'Registration failed' };
+    } catch (error: unknown) {
+      return { success: false, message: (error as Error).message || 'Registration failed' };
     }
   };
 

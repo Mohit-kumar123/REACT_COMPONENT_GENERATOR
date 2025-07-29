@@ -45,7 +45,7 @@ export default function RegisterPage() {
       } else {
         toast.error(result.message || 'Registration failed');
       }
-    } catch (error) {
+    } catch (err) {
       toast.error('An error occurred during registration');
     } finally {
       setIsLoading(false);
