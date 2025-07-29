@@ -107,6 +107,36 @@ export default function LoginPage() {
                 Sign up
               </Link>
             </p>
+            
+            {/* Demo Credentials Section */}
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
+              <h4 className="text-sm font-medium text-slate-700 text-center">
+                🧪 Demo Account for Testing
+              </h4>
+              <div className="text-xs text-slate-600 space-y-1">
+                <p className="text-center">
+                  <span className="font-medium">Email:</span> demo@gmail.com
+                </p>
+                <p className="text-center">
+                  <span className="font-medium">Password:</span> demo@123
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="w-full text-xs"
+                onClick={() => {
+                  setFormData({
+                    email: 'demo@gmail.com',
+                    password: 'demo@123'
+                  });
+                }}
+                disabled={isLoading}
+              >
+                Fill Demo Credentials
+              </Button>
+            </div>
           </CardFooter>
         </form>
       </Card>
