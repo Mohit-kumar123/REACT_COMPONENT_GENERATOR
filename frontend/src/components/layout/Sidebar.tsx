@@ -23,22 +23,25 @@ export default function Sidebar() {
 
   const navigationItems = [
     {
+      id: 'dashboard',
       label: 'Dashboard',
       icon: Home,
       href: '/dashboard',
       active: pathname === '/dashboard',
     },
     {
+      id: 'new-session',
       label: 'New Session',
       icon: Plus,
       href: '/dashboard/new',
       active: pathname === '/dashboard/new',
     },
     {
+      id: 'chat',
       label: 'Chat',
       icon: MessageSquare,
-      href: currentSession ? `/dashboard/session/${currentSession._id}` : '/dashboard/new',
-      active: pathname.startsWith('/dashboard/session/'),
+      href: currentSession ? `/dashboard/session/${currentSession._id}/chat` : '/dashboard/new',
+      active: pathname.includes('/chat'),
       disabled: !currentSession,
     },
   ];
@@ -55,7 +58,7 @@ export default function Sidebar() {
           <nav className="space-y-1">
             {navigationItems.map((item) => (
               <Button
-                key={item.href}
+                key={item.id}
                 variant={item.active ? "secondary" : "ghost"}
                 className={cn(
                   "w-full justify-start gap-2 text-left",
@@ -90,7 +93,7 @@ export default function Sidebar() {
 
           <ScrollArea className="h-[400px]">
             <div className="space-y-1">
-              {sessions.length === 0 ? (
+              {(!sessions || sessions.length === 0) ? (
                 <p className="text-xs text-slate-500 text-center py-4">
                   No sessions yet
                 </p>
@@ -109,7 +112,7 @@ export default function Sidebar() {
                       {session.title || 'Untitled Session'}
                     </div>
                     <div className="text-xs text-slate-400 truncate w-full">
-                      {new Date(session.statistics.lastActiveAt).toLocaleDateString()}
+                      {new Date(session.statistics?.lastActiveAt || session.createdAt).toLocaleDateString()}
                     </div>
                   </Button>
                 ))

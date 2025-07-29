@@ -35,11 +35,14 @@ export default function DashboardPage() {
         // Calculate stats
         const totalSessions = response.data.sessions.length;
         const totalComponents = response.data.sessions.reduce(
-          (acc: number, session: Session) => acc + session.components.length, 
+          (acc: number, session: Session) => acc + (session.components?.length || 0), 
           0
         );
         const recentActivity = response.data.sessions.filter(
-          (session: Session) => new Date(session.statistics.lastActiveAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          (session: Session) => {
+            const lastActiveAt = session.statistics?.lastActiveAt || session.createdAt;
+            return new Date(lastActiveAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+          }
         ).length;
 
         setStats({
@@ -49,7 +52,18 @@ export default function DashboardPage() {
         });
       }
     } catch (err) {
-      toast.error('Failed to load sessions');
+      console.error('Failed to load sessions:', err);
+      // Set empty data instead of showing error to prevent app crash
+      setSessions([]);
+      setStats({
+        totalSessions: 0,
+        totalComponents: 0,
+        recentActivity: 0,
+      });
+      // Only show error toast if this is not a network connectivity issue
+      if (err && typeof err === 'object' && 'response' in err) {
+        toast.error('Failed to load sessions');
+      }
     } finally {
       setLoading(false);
     }
@@ -72,7 +86,7 @@ export default function DashboardPage() {
     }
   };
 
-  const recentSessions = sessions.slice(0, 3);
+  const recentSessions = (sessions || []).slice(0, 3);
 
   return (
     <div className="space-y-6">
@@ -209,8 +223,8 @@ export default function DashboardPage() {
                         {session.title || 'Untitled Session'}
                       </h4>
                       <p className="text-xs text-slate-400">
-                        {session.components.length} component(s) • {' '}
-                        {new Date(session.statistics.lastActiveAt).toLocaleDateString()}
+                        {session.components?.length || 0} component(s) • {' '}
+                        {new Date(session.statistics?.lastActiveAt || session.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                     <Button variant="ghost" size="sm">
@@ -219,7 +233,7 @@ export default function DashboardPage() {
                   </div>
                 ))}
                 
-                {sessions.length > 3 && (
+                {(sessions || []).length > 3 && (
                   <Button 
                     variant="outline" 
                     className="w-full mt-3"

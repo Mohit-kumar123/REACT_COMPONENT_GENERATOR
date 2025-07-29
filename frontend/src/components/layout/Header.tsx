@@ -62,19 +62,11 @@ export default function Header() {
           
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem 
-              onClick={() => router.push('/dashboard/profile')}
-              className="flex items-center gap-2"
-            >
-              <User size={16} />
-              Profile
-            </DropdownMenuItem>
-            
-            <DropdownMenuItem 
               onClick={() => router.push('/dashboard/settings')}
               className="flex items-center gap-2"
             >
-              <Settings size={16} />
-              Settings
+              <User size={16} />
+              Profile & Settings
             </DropdownMenuItem>
             
             <DropdownMenuSeparator />

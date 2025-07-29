@@ -57,9 +57,9 @@ export const authService = {
     return apiCall<{ token: string }>('POST', '/api/auth/refresh');
   },
 
-  // Verify JWT token
+  // Verify JWT token by getting current user
   verifyToken: async () => {
-    return apiCall<{ user: User }>('GET', '/api/auth/verify');
+    return apiCall<User>('GET', '/api/auth/me');
   },
 
   // Check if user is authenticated

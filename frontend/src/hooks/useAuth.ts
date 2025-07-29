@@ -13,13 +13,16 @@ export const useAuth = () => {
       if (savedToken && !isAuthenticated) {
         try {
           const response = await authService.verifyToken();
-          if (response.success && response.data?.user) {
-            login(savedToken, response.data.user);
+          if (response.success && response.data) {
+            // The /api/auth/me endpoint returns user data directly
+            login(savedToken, response.data);
           } else {
             logout();
           }
         } catch (error) {
           console.error('Token verification failed:', error);
+          // Remove invalid token and logout
+          localStorage.removeItem('auth_token');
           logout();
         }
       }
