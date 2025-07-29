@@ -81,7 +81,7 @@ The backend provides a RESTful API with the following endpoints:
 ## 🌐 Live Demo
 
 - **Backend API:** https://ai-component-generator-backend-18mr.onrender.com
-- **Frontend App:** [Coming Soon]
+- **Frontend App:** https://react-component-generator-sigma.vercel.app/
 
 ## 📝 License
 
