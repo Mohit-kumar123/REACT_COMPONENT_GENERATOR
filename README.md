@@ -80,7 +80,7 @@ The backend provides a RESTful API with the following endpoints:
 
 ## 🌐 Live Demo
 
-- **Backend API:** [Deployed on Render]
+- **Backend API:** https://ai-component-generator-backend-18mr.onrender.com
 - **Frontend App:** [Coming Soon]
 
 ## 📝 License
