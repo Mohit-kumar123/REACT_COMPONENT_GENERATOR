@@ -1,0 +1,61 @@
+﻿---
+title: AI Component Generator - System Architecture
+---
+architecture-beta
+    group frontend(cloud)[Frontend Layer]
+    group backend(server)[Backend Layer]
+    group database(database)[Data Layer]
+    group external(internet)[External Services]
+    group infrastructure(cloud)[Infrastructure]
+
+    service nextjs(server)[NextJS App] in frontend
+    service authui(server)[Auth Components] in frontend
+    service dashboard(server)[Dashboard UI] in frontend
+    service chatui(server)[Chat Interface] in frontend
+    service editor(server)[Code Editor] in frontend
+    service preview(server)[Component Preview] in frontend
+    service zustand(disk)[Zustand Store] in frontend
+
+    service express(server)[Express API] in backend
+    service authservice(server)[JWT Auth Service] in backend
+    service aiservice(server)[AI Integration] in backend
+    service sessionservice(server)[Session Manager] in backend
+    service componentservice(server)[Component Service] in backend
+
+    service mongodb(database)[MongoDB Atlas] in database
+    service redis(database)[Redis Cloud] in database
+
+    service gemini(internet)[Google Gemini AI] in external
+
+    service vercel(cloud)[Vercel Frontend] in infrastructure
+    service render(cloud)[Render Backend] in infrastructure
+
+    junction frontendbackend
+    junction backenddata
+    junction backendexternal
+
+    nextjs:R -- L:frontendbackend
+    authui:R -- L:frontendbackend
+    dashboard:R -- L:frontendbackend
+    chatui:R -- L:frontendbackend
+    editor:R -- L:frontendbackend
+    preview:R -- L:frontendbackend
+
+    frontendbackend:R -- L:express
+    express:R -- L:authservice
+    express:R -- L:aiservice
+    express:R -- L:sessionservice
+    express:R -- L:componentservice
+
+    authservice:B -- T:backenddata
+    sessionservice:B -- T:backenddata
+    componentservice:B -- T:backenddata
+    backenddata:B -- T:mongodb
+    backenddata:B -- T:redis
+
+    aiservice:R -- L:backendexternal
+    backendexternal:R -- L:gemini
+
+    zustand:T -- B:nextjs
+    nextjs{group}:T -- B:vercel
+    express{group}:T -- B:render
