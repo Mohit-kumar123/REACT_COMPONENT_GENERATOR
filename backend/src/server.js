@@ -120,7 +120,7 @@ async function connectToRedis() {
       console.log('✅ Connected to Redis');
     });
 
-    await redisClient.connect();
+    // await redisClient.connect(); // <-- Commented out as requested
     
     // Make redis client available globally
     app.locals.redis = redisClient;
@@ -159,7 +159,7 @@ async function startServer() {
   try {
     // Connect to databases
     await connectToDatabase();
-    await connectToRedis();
+    // await connectToRedis(); // <-- Commented out as requested
     
     // Start HTTP server
     app.listen(PORT, () => {
